@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { StyleSheet, View, Alert } from 'react-native'
+import { StyleSheet, View, Alert, Text } from 'react-native'
 import { Button, Input } from 'react-native-elements'
 import { Session } from '@supabase/supabase-js'
 
@@ -80,7 +80,10 @@ export default function Account({ session }: { session: Session }) {
     return (
         <View style={styles.container}>
             <View style={[styles.verticallySpaced, styles.mt20]}>
-                <Input label="Email" value={session?.user?.email} disabled />
+                <Text>Login Screen</Text>
+            </View>
+            <View style={[styles.verticallySpaced, styles.mt20]}>
+                <Input label="Emailblabla" value={session?.user?.email} disabled />
             </View>
             <View style={styles.verticallySpaced}>
                 <Input label="Username" value={username || ''} onChangeText={(text) => setUsername(text)} />
