@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, Linking } from 'react-native';
+import {View, Text, FlatList, Image, StyleSheet, Linking, TouchableOpacity} from 'react-native';
 import axios, { AxiosResponse } from 'axios';
+import {Session} from "@supabase/supabase-js";
+import {supabase} from "../lib/supabase";
 
 interface EventItem {
     uid: string;
@@ -11,7 +13,7 @@ interface EventItem {
     canonicalurl: string;
 }
 
-const MulhouseAPI: React.FC = () => {
+const MulhouseAPI: React.FC = ({ session }: { session: Session }) => {
     const [data, setData] = useState<EventItem[]>([]);
 
     useEffect(() => {
@@ -21,6 +23,7 @@ const MulhouseAPI: React.FC = () => {
                     'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records?limit=20&lang=fr&refine=location_city%3A%22Mulhouse%22'
                 );
                 setData(response.data.results);
+                console.log(session);
             } catch (error) {
                 console.error('Erreur lors de la requête API', error);
             }
@@ -39,13 +42,23 @@ const MulhouseAPI: React.FC = () => {
                 <Text style={styles.link} onPress={() => Linking.openURL(item.canonicalurl)}>
                     Voir plus
                 </Text>
+                <TouchableOpacity style={styles.button} onPress={() => handleButtonPress(item)}>
+                    <Text style={styles.buttonText}>Ajouter à ma liste</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
 
+    const handleButtonPress = async (item: EventItem) => {
+        // Logique à exécuter lorsque le bouton est pressé
+        console.log(`Bouton pressé pour l'événement : ${item.title_fr}`);
+        const {error} = await supabase
+            .from('events')
+            .insert({user_id: session.user.id, event_uid: item.uid});
+    };
+
     return (
         <View>
-            <Text>test</Text>
             <FlatList
                 data={data}
                 keyExtractor={(item) => item.uid}
@@ -56,6 +69,17 @@ const MulhouseAPI: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+    button: {
+        marginTop: 8,
+        padding: 8,
+        backgroundColor: 'blue',
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
     itemContainer: {
         flexDirection: 'row',
         marginBottom: 16,
