@@ -20,7 +20,7 @@ const MulhouseAPI: React.FC = ({ session }: { session: Session }) => {
         const fetchData = async () => {
             try {
                 const response: AxiosResponse<any> = await axios.get(
-                    'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records?limit=20&lang=fr&refine=location_city%3A%22Mulhouse%22'
+                    "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records?where=location_name%3D%22Mulhouse%22%20and%20firstdate_begin%20%3C%20date'2024'&order_by=firstdate_begin%20DESC&limit=20"
                 );
                 setData(response.data.results);
                 console.log(session);
@@ -58,7 +58,10 @@ const MulhouseAPI: React.FC = ({ session }: { session: Session }) => {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Les événements de Mulhouse!</Text>
+            </View>
             <FlatList
                 data={data}
                 keyExtractor={(item) => item.uid}
@@ -75,6 +78,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
         borderRadius: 5,
     },
+    container: {
+      flex: 1,
+      padding: 16,
+      marginTop: 50,
+    },
+
+    header: {
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+
+    headerText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+    },
+
     buttonText: {
         color: 'white',
         fontWeight: 'bold',
