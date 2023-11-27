@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View, Text } from 'react-native'
 import { supabase } from '../lib/supabase'
 import { Button, Input } from 'react-native-elements'
 
-export default function Auth() {
+export default function Auth({ navigation }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -15,8 +15,14 @@ export default function Auth() {
             password: password,
         })
 
-        if (error) Alert.alert(error.message)
-        setLoading(false)
+        if (error) {
+            Alert.alert(error.message)
+            setLoading(false)
+        } else {
+            setLoading(false)
+            navigation.navigate('Mavigation')
+        }
+
     }
 
     async function signUpWithEmail() {
