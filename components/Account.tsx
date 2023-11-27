@@ -79,11 +79,11 @@ export default function Account({ session }: { session: Session }) {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.verticallySpaced, styles.mt20]}>
-                <Text>Login Screen</Text>
+            <View style={[styles.header]}>
+                <Text style={[styles.headerText]}>Mon compte</Text>
             </View>
             <View style={[styles.verticallySpaced, styles.mt20]}>
-                <Input label="Emailblabla" value={session?.user?.email} disabled />
+                <Input label="Email" value={session?.user?.email} disabled />
             </View>
             <View style={styles.verticallySpaced}>
                 <Input label="Username" value={username || ''} onChangeText={(text) => setUsername(text)} />
@@ -109,7 +109,7 @@ export default function Account({ session }: { session: Session }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 40,
+        marginTop: 50,
         padding: 12,
     },
     verticallySpaced: {
@@ -119,5 +119,13 @@ const styles = StyleSheet.create({
     },
     mt20: {
         marginTop: 20,
+    },
+    header: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    headerText: {
+        fontSize: 24,
+        fontWeight: 'bold',
     },
 })
